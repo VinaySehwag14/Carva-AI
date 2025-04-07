@@ -1,11 +1,12 @@
 "use client";
 
-// import { processImageSearch } from "@/actions/home";
+import { processImageSearch } from "@/actions/home";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useFetch from "@/hooks/use-fetch";
 import { Camera, Search, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
@@ -18,37 +19,36 @@ const HomeSearch = () => {
   const [isImageSearchActive, setIsImageSearchActive] = useState(false);
 
   // Use the useFetch hook for image processing
-  // const {
-  //   loading: isProcessing,
-  //   fn: processImageFn,
-  //   data: processResult,
-  //   error: processError,
-  // } = useFetch(processImageSearch);
+  const {
+    loading: isProcessing,
+    fn: processImageFn,
+    data: processResult,
+    error: processError,
+  } = useFetch(processImageSearch);
 
-  // Handle process result and errors with useEffect
-  // useEffect(() => {
-  //   if (processResult?.success) {
-  //     const params = new URLSearchParams();
+  //* Handle process result and errors with useEffect
+  useEffect(() => {
+    if (processResult?.success) {
+      const params = new URLSearchParams();
 
-  //     // Add extracted params to the search
-  //     if (processResult.data.make) params.set("make", processResult.data.make);
-  //     if (processResult.data.bodyType)
-  //       params.set("bodyType", processResult.data.bodyType);
-  //     if (processResult.data.color)
-  //       params.set("color", processResult.data.color);
+      //* Add extracted params to the search
+      if (processResult.data.make) params.set("make", processResult.data.make);
+      if (processResult.data.bodyType)
+        params.set("bodyType", processResult.data.bodyType);
+      if (processResult.data.color)
+        params.set("color", processResult.data.color);
 
-  //     // Redirect to search results
-  //     router.push(`/cars?${params.toString()}`);
-  //   }
-  // }, [processResult, router]);
+      router.push(`/cars?${params.toString()}`);
+    }
+  }, [processResult, router]);
 
-  // useEffect(() => {
-  //   if (processError) {
-  //     toast.error(
-  //       "Failed to analyze image: " + (processError.message || "Unknown error")
-  //     );
-  //   }
-  // }, [processError]);
+  useEffect(() => {
+    if (processError) {
+      toast.error(
+        "Failed to analyze image: " + (processError.message || "Unknown error")
+      );
+    }
+  }, [processError]);
 
   // Handle image upload with react-dropzone
   const onDrop = (acceptedFiles) => {

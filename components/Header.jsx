@@ -17,7 +17,7 @@ const Header = async ({ isAdminPage = false }) => {
             alt="carva logo"
             width={200}
             height={60}
-            className="h-18 w-50 object-cover"
+            className="h-12 w-40 object-cover"
           />
           {isAdminPage && (
             <span className="text-xs font-extralight">admin</span>

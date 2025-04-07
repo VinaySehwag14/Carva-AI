@@ -1,5 +1,6 @@
 "use client";
 
+import { getFeaturedCars } from "@/actions/home";
 import CarCard from "@/components/car-card";
 import HomeSearch from "@/components/home-search";
 import {
@@ -9,13 +10,24 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { bodyTypes, carMakes, faqItems, featuredCars } from "@/lib/data";
+import { bodyTypes, carMakes, faqItems } from "@/lib/data";
 import { SignedOut } from "@clerk/nextjs";
 import { Calendar, Car, ChevronRight, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [featuredCars, setFeaturedCars] = useState([]);
+
+  useEffect(() => {
+    const loadFeaturedCars = async () => {
+      const cars = await getFeaturedCars();
+      setFeaturedCars(cars);
+    };
+
+    loadFeaturedCars();
+  }, []);
   return (
     <div className="pt-20 flex flex-col">
       {/* <Hero/> */}
